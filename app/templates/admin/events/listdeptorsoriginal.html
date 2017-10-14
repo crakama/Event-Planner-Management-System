@@ -1,0 +1,78 @@
+<!-- app/templates/admin/departments/departments.html -->
+
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}Deptors{% endblock %}
+{% block body %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        {{ utils.flashed_messages() }}
+        <br/>
+        <h1 style="text-align:center;">List of Deptors</h1>
+        {% if deptors %}
+          <hr class="intro-divider">
+          <div class="center">
+
+
+             <table class="table table-striped table-bordered"
+                          data-url="#"
+                          data-toggle="table" data-toolbar="true"
+                          data-show-export="true" data-search="true"
+                          data-query-params="queryParams"
+                          data-pagination="true" >
+              <thead>
+
+                <tr style="background-color: #4f7386; color: white;">
+
+                  <th width="15%"> Full Name </th>
+                  <th width="15%"> Mobile No. </th>
+                  <th width="15%"> National ID </th>
+                  <th width="15%"> Dept Amount </th>
+                  <th width="50%"> Description</th>
+                  <th width="15%"> Edit </th>
+                  <th width="15%"> Delete </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for deptor in deptors %}
+                <tr>
+
+                  <td> {{ deptor.fullnames }} </td>
+                  <td> {{ deptor.mobilenumber }} </td>
+                  <td> {{ deptor.nationalid }} </td>
+                  <td> {{ deptor.deptamount }} </td>
+                  <td> {{ deptor.description }} </td>
+                  <td>
+                    <a href="{{ url_for('admin.edit_deptor', id=deptor.id) }}">
+                      <i class="fa fa-pencil"></i> Edit
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{{ url_for('admin.delete_deptor', id=deptor.id) }}">
+                      <i class="fa fa-trash"></i> Delete
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div style="text-align: center">
+        {% else %}
+          <div style="text-align: center">
+            <h3> No Deptors have been added. </h3>
+            <hr class="intro-divider">
+        {% endif %}
+          <a href="{{ url_for('admin.add_deptor') }}" class="btn btn-default btn-lg">
+            <i class="fa fa-plus"></i>
+            Add a Deptor
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
