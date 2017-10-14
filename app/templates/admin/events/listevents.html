@@ -1,0 +1,119 @@
+<!-- app/templates/admin/departments/departments.html -->
+
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}Requests{% endblock %}
+{% block body %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        {{ utils.flashed_messages() }}
+        <br/>
+        <h1 style="text-align:center;">List of Client Event Requests</h1>
+        {% if events %}
+          <hr class="intro-divider">
+          <div class="center">
+            {% if current_user.is_admin %}
+                <table class="table table-striped table-bordered"
+                             data-url="#"
+                             data-toggle="table" data-toolbar="true"
+                             data-show-export="true" data-search="true"
+                             data-query-params="queryParams"
+                             data-pagination="true" >
+                 <thead>
+                   <tr style="background-color: #4f7386; color: white;">
+
+                     <th width="15%"> Full Name </th>
+                     <th width="15%"> Mobile No. </th>
+                     <th width="15%"> National ID </th>
+                     <th width="15%"> Expected Budget </th>
+                     <th width="50%"> Description</th>
+                     <th width="15%"> Edit </th>
+                     <th width="15%"> Delete </th>
+                   </tr>
+                 </thead>
+                 <tbody>
+                 {% for event in events %}
+                   <tr>
+
+                     <td> {{ event.fullnames }} </td>
+                     <td> {{ event.mobilenumber }} </td>
+                     <td> {{ event.nationalid }} </td>
+                     <td> {{ event.deptamount }} </td>
+                     <td> {{ event.description }} </td>
+                     <td>
+                       <a href="{{ url_for('admin.edit_event', id=event.id) }}">
+                         <i class="fa fa-pencil"></i> Edit
+                       </a>
+                     </td>
+                     <td>
+                       <a href="{{ url_for('admin.delete_event', id=event.id) }}">
+                         <i class="fa fa-trash"></i> Delete
+                       </a>
+                     </td>
+                   </tr>
+                 {% endfor %}
+                 </tbody>
+               </table>
+            {% else %}
+                <table class="table table-striped table-bordered"
+                             data-url="#"
+                             data-toggle="table" data-toolbar="true"
+                             data-show-export="false" data-search="true"
+                             data-query-params="queryParams"
+                             data-pagination="true" >
+                 <thead>
+                   <tr style="background-color: #4f7386; color: white;">
+                     <th width="15%"> Full Name </th>
+                     <th width="15%"> Mobile No. </th>
+                     <th width="15%"> National ID </th>
+                     <th width="15%"> Dept Amount </th>
+                     <th width="50%"> Description</th>
+                     <th width="15%"> Edit </th>
+                     <th width="15%"> Delete </th>
+                   </tr>
+                 </thead>
+                 <tbody>
+                 {% for event in events %}
+                   <tr>
+
+                     <td> {{ event.fullnames }} </td>
+                     <td> {{ event.mobilenumber }} </td>
+                     <td> {{ event.nationalid }} </td>
+                     <td> {{ event.deptamount }} </td>
+                     <td> {{ event.description }} </td>
+                     <td>
+                       <a href="{{ url_for('admin.edit_event', id=event.id) }}">
+                         <i class="fa fa-pencil"></i> Edit
+                       </a>
+                     </td>
+                     <td>
+                       <a href="{{ url_for('admin.delete_event', id=event.id) }}">
+                         <i class="fa fa-trash"></i> Delete
+                       </a>
+                     </td>
+                   </tr>
+                 {% endfor %}
+                 </tbody>
+               </table>
+
+            {% endif %}
+          </div>
+          <div style="text-align: center">
+        {% else %}
+          <div style="text-align: center">
+            <h3> No Requests have been added. </h3>
+            <hr class="intro-divider">
+        {% endif %}
+          <a href="{{ url_for('admin.add_event') }}" class="btn btn-default btn-lg">
+            <i class="fa fa-plus"></i>
+            Add a Request
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
