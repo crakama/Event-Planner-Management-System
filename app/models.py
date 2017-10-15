@@ -65,6 +65,11 @@ class Event(db.Model):
     nationalid = db.Column(db.Integer,index=True, unique=True)
     deptamount = db.Column(db.Integer, index=True)
     description = db.Column(db.String(200))
+    scscomment = db.Column(db.String(200))
+    fmcomment = db.Column(db.String(200))
+    amcomment = db.Column(db.String(200))
+    pmcomment = db.Column(db.String(200))
+    sbcomment = db.Column(db.String(200))
     # remoteusers = db.relationship('RemoteUser', backref='events',
     #                             lazy='dynamic')
 

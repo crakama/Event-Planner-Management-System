@@ -11,7 +11,7 @@
         <br/>
         {{ utils.flashed_messages() }}
         <br/>
-        <h1 style="text-align:center;">List of Client Event Requests</h1>
+        <h2 style="text-align:center;">List of Client Event Requests</h2>
         {% if events %}
           <hr class="intro-divider">
           <div class="center">
@@ -71,8 +71,12 @@
                      <th width="15%"> National ID </th>
                      <th width="15%"> Dept Amount </th>
                      <th width="50%"> Description</th>
-                     <th width="15%"> Edit </th>
-                     <th width="15%"> Delete </th>
+                     <th width="15%"> SCS Comments </th>
+                     <th width="15%"> FM Comments </th>
+                     <th width="15%"> AM Comments </th>
+                     <th width="15%"> PM Comments </th>
+                     <th width="15%"> SubTeam Comments </th>
+                     <th width="15%"> Comments </th>
                    </tr>
                  </thead>
                  <tbody>
@@ -84,16 +88,21 @@
                      <td> {{ event.nationalid }} </td>
                      <td> {{ event.deptamount }} </td>
                      <td> {{ event.description }} </td>
+                     <td> {{ event.scscomment }} </td>
+                     <td> {{ event.fmcomment }} </td>
+                     <td> {{ event.amcomment }} </td>
+                     <td> {{ event.pmcomment }} </td>
+                     <td> {{ event.sbcomment }} </td>
                      <td>
-                       <a href="{{ url_for('admin.edit_event', id=event.id) }}">
-                         <i class="fa fa-pencil"></i> Edit
+                       <a href="{{ url_for('home.scscomment_event', id=event.id) }}">
+                         <i class="fa fa-pencil"></i> Add Comment
                        </a>
                      </td>
-                     <td>
+                     <!-- <td>
                        <a href="{{ url_for('admin.delete_event', id=event.id) }}">
                          <i class="fa fa-trash"></i> Delete
                        </a>
-                     </td>
+                     </td> -->
                    </tr>
                  {% endfor %}
                  </tbody>

@@ -51,7 +51,7 @@ class TestModels(TestBase):
         """
         Test number of records in RemoteUser table
         """
-        self.assertEqual(Employee.query.count(), 2)
+        self.assertEqual(RemoteUser.query.count(), 2)
 
     def test_event_model(self):
         """

@@ -43,7 +43,7 @@
                     <li><a href="{{ url_for('admin.list_remoteusers') }}">Manage Sub Team</a></li>
                     <li><a href="{{ url_for('admin.list_roles') }}">Assign Roles</a></li>
                   {% else %}
-                    <li><a href="{{ url_for('home.deptdashboard') }}">Home</a></li>
+                    <li><a href="{{ url_for('home.eventdashboard') }}">Home</a></li>
                   {% endif %}
                   <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                   <li><a><i class="fa fa-user"></i>  Hi, {{ current_user.username }}!</a></li>

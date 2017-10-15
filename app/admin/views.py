@@ -95,7 +95,7 @@ def edit_event(id):
     form.description.data = event.description
     return render_template('admin/events/addeditevent.html', action="Edit",
                            add_event=add_event, form=form,
-                           event=event, title="Edit Event")
+                           event=event, title="Edit Event")                   
 
 @admin.route('/events/delete/<int:id>', methods=['GET', 'POST'])
 @login_required

@@ -9,13 +9,18 @@ from ..models import Event, Role
 
 class EventForm(FlaskForm):
     """
-    Form for admin to add or edit a department
+    Form for admin to add or edit an event
     """
     fullname = StringField('Name', validators=[DataRequired()])
     mobileno = IntegerField('Mobile Number', validators=[DataRequired()])
     nationalid = IntegerField('ID Number', validators=[DataRequired()])
     deptamount = IntegerField('Amount', validators=[DataRequired()])
-    description = StringField('Description', validators=[DataRequired()])
+    description = StringField('EventDescription', validators=[DataRequired()])
+    scscomment = StringField('SCS Comments')
+    fmcomment = StringField('FM Comments')
+    amcomment = StringField('PM Comments')
+    pmcomment = StringField('STeam Comments')
+    sbcomment = StringField('AM Comments')
     submit = SubmitField('Submit')
 
 class RoleForm(FlaskForm):

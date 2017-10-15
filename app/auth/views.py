@@ -54,7 +54,7 @@ def login():
             if remotuser.is_admin:
                 return redirect(url_for('home.admin_dashboard'))
             else:
-                return redirect(url_for('home.deptdashboard'))
+                return redirect(url_for('home.eventdashboard'))
 
         # when login details are incorrect
         else:
