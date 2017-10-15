@@ -77,6 +77,7 @@
                      <th width="15%"> PM Comments </th>
                      <th width="15%"> SubTeam Comments </th>
                      <th width="15%"> Comments </th>
+                     <th width="15%"> Event Status </th>
                    </tr>
                  </thead>
                  <tbody>
@@ -93,11 +94,13 @@
                      <td> {{ event.amcomment }} </td>
                      <td> {{ event.pmcomment }} </td>
                      <td> {{ event.sbcomment }} </td>
+
                      <td>
                        <a href="{{ url_for('home.scscomment_event', id=event.id) }}">
                          <i class="fa fa-pencil"></i> Add Comment
                        </a>
                      </td>
+                     <td> {{ event.appstatus }}  </td>
                      <!-- <td>
                        <a href="{{ url_for('admin.delete_event', id=event.id) }}">
                          <i class="fa fa-trash"></i> Delete

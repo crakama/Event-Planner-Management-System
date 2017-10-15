@@ -1,7 +1,7 @@
 # app/home/forms.py
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField
+from wtforms import StringField, SubmitField, IntegerField,RadioField
 from wtforms.validators import DataRequired
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
@@ -28,6 +28,7 @@ class SCSCommentForm(FlaskForm):
     Form for admin to add or edit an event
     """
     scscomment = StringField('SCS Comments')
+    appapproval = RadioField('Approval', choices=[('True','Accept'),('False','Reject')])
     submit = SubmitField('Submit')
 
 class FMCommentForm(FlaskForm):
