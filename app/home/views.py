@@ -39,7 +39,7 @@ def eventdashboard():
     events = Event.query.all()
     user = RemoteUser.query.filter_by(username='scsadmin').first()
     scsname2 = user
-    scsname3 = user
+    scsname3 = "scsadmin"
 
     return render_template('admin/events/listevents.html',
                            events=events, scsname3=scsname3,scsname2=scsname2, title="Events")

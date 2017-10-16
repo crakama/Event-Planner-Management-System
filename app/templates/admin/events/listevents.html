@@ -95,10 +95,15 @@
                         <th width="50%"> PM Comments </th>
                         <th width="50%"> SubTeam Comments </th>
                         <th width="50%"> Event Status </th>
+
+                        {% if scsname2 == scsname3 %}
                         <th width="50%"> Email Receiver </th>
                         <th width="50%"> Email Sent </th>
                         <th width="50%"> Feedback </th>
                         <th width="50%"> Send Email </th>
+                        {% else %}
+                        <th width="50%"> Feedback </th>
+                        {% endif %}
                       </tr>
                     </thead>
                     <tbody>
@@ -115,22 +120,26 @@
                         <td> {{ event.pmcomment }} </td>
                         <td> {{ event.sbcomment }} </td>
                         <td> {{ event.appstatus }}  </td>
+
+                        {% if scsname2 == scsname3 %}
                         <td> {{ event.emailrecepient }} </td>
                         <td> {{ event.emailsent }} </td>
-
                         <td>
                           <a href="{{ url_for('home.scscomment_event', id=event.id) }}">
                             <i class="fa fa-pencil"></i> Add Comment
                           </a>
                         </td>
-
-                        {% if scsname2 == scsname3 %}
                         <td>
                           <a href="{{ url_for('home.scssend_email', id=event.id) }}">
                             <i class="fa fa-pencil"></i> Send Email
                           </a>
                         </td>
                         {% else %}
+                        <td>
+                          <a href="{{ url_for('home.scscomment_event', id=event.id) }}">
+                            <i class="fa fa-pencil"></i> Add Comment
+                          </a>
+                        </td>
                         {% endif %}
                        </tr>
                     {% endfor %}
