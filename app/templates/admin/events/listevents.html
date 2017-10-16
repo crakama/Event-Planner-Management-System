@@ -7,125 +7,151 @@
 <div class="content-section">
   <div class="outer">
     <div class="middle">
-      <div class="inner">
+       <div class="inner"> <!---Main Inner ---------------->
         <br/>
         {{ utils.flashed_messages() }}
         <br/>
-        <h2 style="text-align:center;">List of Client Event Requests</h2>
-        {% if events %}
-          <hr class="intro-divider">
-          <div class="center">
-            {% if current_user.is_admin %}
-                <table class="table table-striped table-bordered"
-                             data-url="#"
-                             data-toggle="table" data-toolbar="true"
-                             data-show-export="true" data-search="true"
-                             data-query-params="queryParams"
-                             data-pagination="true" >
-                 <thead>
-                   <tr style="background-color: #4f7386; color: white;">
+        <hr class="intro-divider">
+        <div class="center"> <!--- if current_user.is_admin & Other users sandwitched in <div class="center">---->
+         {% if current_user.is_admin %}
 
-                     <th width="15%"> Full Name </th>
-                     <th width="15%"> Mobile No. </th>
-                     <th width="15%"> National ID </th>
-                     <th width="15%"> Expected Budget </th>
-                     <th width="50%"> Description</th>
-                     <th width="15%"> Edit </th>
-                     <th width="15%"> Delete </th>
-                   </tr>
-                 </thead>
-                 <tbody>
-                 {% for event in events %}
-                   <tr>
+             <h3 style="text-align:center;">List of Client Event Requests</h3>
+             {% if events %}
+             <table class="table table-striped table-bordered"
+                          data-url="#"
+                          data-toggle="table" data-toolbar="true"
+                          data-show-export="true" data-search="true"
+                          data-query-params="queryParams"
+                          data-pagination="true" >
+              <thead>
+                <tr style="background-color: #4f7386; color: white;">
 
-                     <td> {{ event.fullnames }} </td>
-                     <td> {{ event.mobilenumber }} </td>
-                     <td> {{ event.nationalid }} </td>
-                     <td> {{ event.deptamount }} </td>
-                     <td> {{ event.description }} </td>
-                     <td>
-                       <a href="{{ url_for('admin.edit_event', id=event.id) }}">
-                         <i class="fa fa-pencil"></i> Edit
-                       </a>
-                     </td>
-                     <td>
-                       <a href="{{ url_for('admin.delete_event', id=event.id) }}">
-                         <i class="fa fa-trash"></i> Delete
-                       </a>
-                     </td>
-                   </tr>
-                 {% endfor %}
-                 </tbody>
-               </table>
-            {% else %}
-                <table class="table table-striped table-bordered"
-                             data-url="#"
-                             data-toggle="table" data-toolbar="true"
-                             data-show-export="false" data-search="true"
-                             data-query-params="queryParams"
-                             data-pagination="true" >
-                 <thead>
-                   <tr style="background-color: #4f7386; color: white;">
-                     <th width="15%"> Full Name </th>
-                     <th width="15%"> Mobile No. </th>
-                     <th width="15%"> National ID </th>
-                     <th width="15%"> Dept Amount </th>
-                     <th width="50%"> Description</th>
-                     <th width="15%"> SCS Comments </th>
-                     <th width="15%"> FM Comments </th>
-                     <th width="15%"> AM Comments </th>
-                     <th width="15%"> PM Comments </th>
-                     <th width="15%"> SubTeam Comments </th>
-                     <th width="15%"> Comments </th>
-                     <th width="15%"> Event Status </th>
-                   </tr>
-                 </thead>
-                 <tbody>
-                 {% for event in events %}
-                   <tr>
+                  <th width="15%"> Full Name </th>
+                  <th width="15%"> Mobile No. </th>
+                  <th width="15%"> National ID </th>
+                  <th width="15%"> Expected Budget </th>
+                  <th width="50%"> Description</th>
+                  <th width="15%"> Edit </th>
+                  <th width="15%"> Delete </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for event in events %}
+                <tr>
 
-                     <td> {{ event.fullnames }} </td>
-                     <td> {{ event.mobilenumber }} </td>
-                     <td> {{ event.nationalid }} </td>
-                     <td> {{ event.deptamount }} </td>
-                     <td> {{ event.description }} </td>
-                     <td> {{ event.scscomment }} </td>
-                     <td> {{ event.fmcomment }} </td>
-                     <td> {{ event.amcomment }} </td>
-                     <td> {{ event.pmcomment }} </td>
-                     <td> {{ event.sbcomment }} </td>
+                  <td> {{ event.fullnames }} </td>
+                  <td> {{ event.mobilenumber }} </td>
+                  <td> {{ event.nationalid }} </td>
+                  <td> {{ event.deptamount }} </td>
+                  <td> {{ event.description }} </td>
+                  <td>
+                    <a href="{{ url_for('admin.edit_event', id=event.id) }}">
+                      <i class="fa fa-pencil"></i> Edit
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{{ url_for('admin.delete_event', id=event.id) }}">
+                      <i class="fa fa-trash"></i> Delete
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
 
-                     <td>
-                       <a href="{{ url_for('home.scscomment_event', id=event.id) }}">
-                         <i class="fa fa-pencil"></i> Add Comment
-                       </a>
-                     </td>
-                     <td> {{ event.appstatus }}  </td>
-                     <!-- <td>
-                       <a href="{{ url_for('admin.delete_event', id=event.id) }}">
-                         <i class="fa fa-trash"></i> Delete
-                       </a>
-                     </td> -->
-                   </tr>
-                 {% endfor %}
-                 </tbody>
-               </table>
+           <div style="text-align: center">  <!--- No Requests have been added,Add a Request---------------------------------------------->
+         {% else %}
+           <div style="text-align: center">
+             <h3> No Requests have been added. </h3>
+             <hr class="intro-divider">
+         {% endif %}
+           <a href="{{ url_for('admin.add_event') }}" class="btn btn-default btn-lg">
+             <i class="fa fa-plus"></i>
+             Add a Request
+           </a>
+         </div>
+         </div>   <!--- No Requests have been added,Add a Request--->
+         {% else %} <!--- If user not Admin--->
+             <h2 style="text-align:center;">List of Client Event Requests</h2>
+             {% if events %}
 
-            {% endif %}
-          </div>
-          <div style="text-align: center">
-        {% else %}
-          <div style="text-align: center">
-            <h3> No Requests have been added. </h3>
-            <hr class="intro-divider">
-        {% endif %}
-          <a href="{{ url_for('admin.add_event') }}" class="btn btn-default btn-lg">
-            <i class="fa fa-plus"></i>
-            Add a Request
-          </a>
-        </div>
-      </div>
-    </div>
+                   <!--- If user not Admin, check if user is senior customer service--->
+                   <table class="table table-striped table-bordered"
+                                data-url="#"
+                                data-toggle="table" data-toolbar="true"
+                                data-show-export="false" data-search="true"
+                                data-query-params="queryParams"
+                                data-pagination="true" >
+                    <thead>
+                      <tr style="background-color: #4f7386; color: white;">
+                        <th width="50%"> Full Name </th>
+                        <th width="50%"> Mobile No. </th>
+                        <th width="50%"> National ID </th>
+                        <th width="50%"> Dept Amount </th>
+                        <th width="50%"> Description</th>
+                        <th width="50%"> SCS Comments </th>
+                        <th width="50%"> FM Comments </th>
+                        <th width="50%"> AM Comments </th>
+                        <th width="50%"> PM Comments </th>
+                        <th width="50%"> SubTeam Comments </th>
+                        <th width="50%"> Event Status </th>
+                        <th width="50%"> Email Receiver </th>
+                        <th width="50%"> Email Sent </th>
+                        <th width="50%"> Feedback </th>
+                        <th width="50%"> Send Email </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for event in events %}
+                      <tr>
+                        <td> {{ event.fullnames }} </td>
+                        <td> {{ event.mobilenumber }} </td>
+                        <td> {{ event.nationalid }} </td>
+                        <td> {{ event.deptamount }} </td>
+                        <td> {{ event.description }} </td>
+                        <td> {{ event.scscomment }} </td>
+                        <td> {{ event.fmcomment }} </td>
+                        <td> {{ event.amcomment }} </td>
+                        <td> {{ event.pmcomment }} </td>
+                        <td> {{ event.sbcomment }} </td>
+                        <td> {{ event.appstatus }}  </td>
+                        <td> {{ event.emailrecepient }} </td>
+                        <td> {{ event.emailsent }} </td>
+
+                        <td>
+                          <a href="{{ url_for('home.scscomment_event', id=event.id) }}">
+                            <i class="fa fa-pencil"></i> Add Comment
+                          </a>
+                        </td>
+
+                        {% if scsname2 == scsname3 %}
+                        <td>
+                          <a href="{{ url_for('home.scssend_email', id=event.id) }}">
+                            <i class="fa fa-pencil"></i> Send Email
+                          </a>
+                        </td>
+                        {% else %}
+                        {% endif %}
+                       </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+            <!--- If user not Admin, check if user is senior customer service--->
+
+            <!--- If user not Admin and not SCS--->
+
+            <!--- If user not Admin and not SCS--->
+               <div style="text-align: center">  <!--- No Requests have been added,Add a Request--->
+             {% else %}
+               <div style="text-align: center">
+                 <h3> No Client Requests have been added yet. Check later</h3>
+                 <hr class="intro-divider">
+             {% endif %}
+             </div>
+             </div>   <!--- No Requests have been added,Add a Request---------------------------------------------->
+         {% endif %}
+         </div>
+    </div> <!--- Main Inner ---------------------------------------------->
   </div>
 </div>
 {% endblock %}

@@ -70,7 +70,9 @@ class Event(db.Model):
     amcomment = db.Column(db.String(200))
     pmcomment = db.Column(db.String(200))
     sbcomment = db.Column(db.String(200))
-    appstatus= db.Column(db.String(50))
+    appstatus = db.Column(db.String(50))
+    emailsent = db.Column(db.String(200))
+    emailrecepient= db.Column(db.String(50))
     # remoteusers = db.relationship('RemoteUser', backref='events',
     #                             lazy='dynamic')
 

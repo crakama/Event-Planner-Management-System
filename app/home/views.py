@@ -5,9 +5,9 @@ from flask_login import current_user, login_required
 from flask_mail import Mail, Message
 from app import mail
 from . import home
-from forms import SCSCommentForm, FMCommentForm, AMCommentForm, PMCommentForm, SBCommentForm
+from forms import SCSCommentForm, FMCommentForm, AMCommentForm, PMCommentForm, SBCommentForm, SendEmailForm
 from .. import db
-from ..models import Event, Role
+from ..models import Event, Role, RemoteUser
 
 # Each view handles requests to the specified URL
 
@@ -26,11 +26,8 @@ def homepage():
     """
     Render the homepage template on the / route
     """
-    msg = Message('Hello', sender = 'katerak2013@gmail.com', recipients = ['cate.rakama@gmail.com'])
-    msg.body = "Hello Flask message sent from Flask-Mail"
-    mail.send(msg)
-    return "Sent"
-    # return render_template('home/index.html', title="Welcome")
+
+    return render_template('home/index.html', title="Welcome")
 
 @home.route('/eventdashboard', methods=['GET', 'POST'])
 @login_required
@@ -40,13 +37,43 @@ def eventdashboard():
     """
 
     events = Event.query.all()
-    # roles = Role.query.all()
-    # form = EventForm()
-    # if roles.name == "":
-    #     del form.
+    user = RemoteUser.query.filter_by(username='scsadmin').first()
+    scsname2 = user
+    scsname3 = user
 
     return render_template('admin/events/listevents.html',
-                           events=events, title="Events")
+                           events=events, scsname3=scsname3,scsname2=scsname2, title="Events")
+
+
+@home.route('/events/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def scssend_email(id):
+    """
+    Edit an Event
+    """
+
+    scssend_email = True
+
+    event = Event.query.get_or_404(id)
+    form = SendEmailForm(obj=event)
+
+    if form.validate_on_submit():
+        msg = Message('Hello', sender = 'katerak2013@gmail.com', recipients = [form.emailrecepient.data])
+        msg.body = form.scssendemail.data
+        mail.send(msg)
+        event.emailsent = form.scssendemail.data
+        db.session.commit()
+        flash('You have successfully Sent an Email.')
+
+        # redirect to the events page
+        return redirect(url_for('home.eventdashboard'))
+
+    form.scssendemail.data = event.emailsent
+    form.emailrecepient.data = event.emailrecepient
+
+    return render_template('admin/events/addeditevent.html', action="Edit",
+                           scssend_email=scssend_email, form=form,
+                           event=event, title="Edit Event")
 
 # -----------------------------
 @home.route('/events/edit/<int:id>', methods=['GET', 'POST'])

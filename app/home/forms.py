@@ -7,28 +7,19 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
 from ..models import Event, Role
 
-# class EventForm(FlaskForm):
-#     """
-#     Form for admin to add or edit an event
-#     """
-#     # fullname = StringField('Name', validators=[DataRequired()])
-#     # mobileno = IntegerField('Mobile Number', validators=[DataRequired()])
-#     # nationalid = IntegerField('ID Number', validators=[DataRequired()])
-#     # deptamount = IntegerField('Amount', validators=[DataRequired()])
-#     # description = StringField('EventDescription', validators=[DataRequired()])
-#     scscomment = StringField('SCS Comments')
-#     fmcomment = StringField('FM Comments')
-#     amcomment = StringField('PM Comments')
-#     pmcomment = StringField('STeam Comments')
-#     sbcomment = StringField('AM Comments')
-#     submit = SubmitField('Submit')
-
 class SCSCommentForm(FlaskForm):
     """
     Form for admin to add or edit an event
     """
     scscomment = StringField('SCS Comments')
     appapproval = RadioField('Approval', choices=[('True','Accept'),('False','Reject')])
+    submit = SubmitField('Submit')
+class SendEmailForm(FlaskForm):
+    """
+    Form for admin to add or edit an event
+    """
+    scssendemail = StringField('Email Subject')
+    emailrecepient = StringField('Email Recepients')
     submit = SubmitField('Submit')
 
 class FMCommentForm(FlaskForm):
