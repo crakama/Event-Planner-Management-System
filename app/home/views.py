@@ -45,7 +45,7 @@ def eventdashboard():
                            events=events, scsname3=scsname3,scsname2=scsname2, title="Events")
 
 
-@home.route('/events/edit/<int:id>', methods=['GET', 'POST'])
+@home.route('/events/send/<int:id>', methods=['GET', 'POST'])
 @login_required
 def scssend_email(id):
     """
