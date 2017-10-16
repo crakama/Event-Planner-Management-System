@@ -4,9 +4,9 @@ from flask import abort, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
 
 from . import admin
-from forms import EventForm, RemoteUserAssignForm, RoleForm
+from forms import EventForm, RemoteUserAssignForm, RoleForm, TaskForm
 from .. import db
-from ..models import Event, RemoteUser, Role
+from ..models import Event, RemoteUser, Role,Task
 
 def check_admin():
     """
@@ -95,7 +95,7 @@ def edit_event(id):
     form.description.data = event.description
     return render_template('admin/events/addeditevent.html', action="Edit",
                            add_event=add_event, form=form,
-                           event=event, title="Edit Event")                   
+                           event=event, title="Edit Event")
 
 @admin.route('/events/delete/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -115,6 +115,98 @@ def delete_event(id):
 
     return render_template(title="Delete Event")
 
+
+
+#######################    Tasks #####################################################
+
+
+@admin.route('/roles/add', methods=['GET', 'POST'])
+@login_required
+def add_task():
+    """
+    Add a role to the database
+    """
+    check_admin()
+
+    add_task = True
+
+    form = TaskForm()
+    if form.validate_on_submit():
+        task = Task(taskname=form.name.data,
+                    description=form.description.data)
+
+        try:
+            # add task to the database
+            db.session.add(task)
+            db.session.commit()
+            flash('You have successfully added a new task.')
+        except:
+            # in case task name already exists
+            flash('Error: task name already exists.')
+
+        # redirect to the tasks page
+        return redirect(url_for('admin.list_tasks'))
+
+    # load tasks template
+    return render_template('admin/tasks/addedittask.html', add_task=add_task,
+                           form=form, title='Edit Task')
+@admin.route('/tasks')
+@login_required
+def list_tasks():
+    check_admin()
+    """
+    List all tasks
+    """
+    tasks = Task.query.all()
+    return render_template('admin/tasks/listtasks.html',
+                           tasks=tasks, title='Tasks')
+
+@admin.route('/tasks/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_task(id):
+    """
+    Edit a task
+    """
+    check_admin()
+
+    add_task = False
+
+    task = Task.query.get_or_404(id)
+    form = TaskForm(obj=task)
+    if form.validate_on_submit():
+        task.name = form.name.data
+        task.description = form.description.data
+        db.session.add(task)
+        db.session.commit()
+        flash('You have successfully edited the task.')
+
+        # redirect to the roles page
+        return redirect(url_for('admin.list_tasks'))
+
+    form.description.data = task.description
+    form.name.data = task.taskname
+    return render_template('admin/tasks/addedittask.html', add_task=add_task,
+                           form=form, title="Edit Task")
+
+@admin.route('/tasks/delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def delete_task(id):
+    """
+    Delete a task from the database
+    """
+    check_admin()
+
+    task = Task.query.get_or_404(id)
+    db.session.delete(task)
+    db.session.commit()
+    flash('You have successfully deleted the task.')
+
+    # redirect to the tasks page
+    return redirect(url_for('admin.list_tasks'))
+
+    return render_template(title="Delete Task")
+
+#######################    Tasks ##############################################
 
     ############################ Role Views ###################################
 

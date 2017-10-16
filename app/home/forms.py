@@ -14,6 +14,7 @@ class SCSCommentForm(FlaskForm):
     scscomment = StringField('SCS Comments')
     appapproval = RadioField('Approval', choices=[('True','Accept'),('False','Reject')])
     submit = SubmitField('Submit')
+
 class SendEmailForm(FlaskForm):
     """
     Form for admin to add or edit an event
