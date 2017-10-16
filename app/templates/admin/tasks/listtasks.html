@@ -38,12 +38,12 @@
                     {% endif %}
                   </td>
                   <td style="color: #4f7386;">
-                    <a href="{{ url_for('admin.edit_role', id=task.id) }}" class="crudcolor">
+                    <a href="{{ url_for('admin.edit_task', id=task.id) }}" class="crudcolor">
                       <i class="fa fa-pencil"></i> Edit
                     </a>
                   </td>
                   <td>
-                    <a href="{{ url_for('admin.delete_role', id=task.id) }}">
+                    <a href="{{ url_for('admin.delete_task', id=task.id) }}">
                       <i class="fa fa-trash"></i> Delete
                     </a>
                   </td>
