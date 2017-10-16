@@ -68,7 +68,8 @@ class TestModels(TestBase):
 
     def test_role_model(self):
         """
-        Test number of records in Role table
+        Test if you can add data to DB by inserting a temporary value then
+        count the number of records in Role table to confirm insert works
         """
 
         # create test role
@@ -86,7 +87,7 @@ class TestViews(TestBase):
         """
         Test that homepage is accessible without login
         """
-        response = self.client.get(url_for('home.homepage'))
+        response = self.client.get(url_for('home.homepage '))
         self.assertEqual(response.status_code, 200)
 
     def test_login_view(self):

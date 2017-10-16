@@ -3,6 +3,7 @@
 import os
 # third-party imports
 from flask import Flask, render_template
+# from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 
 # local imports
@@ -10,7 +11,7 @@ from config import app_config
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
-
+from flask_mail import Mail
 
 from config import app_config
 
@@ -19,6 +20,8 @@ db = SQLAlchemy()
 
 # LoginManager object initializing
 login_manager = LoginManager()
+
+mail = Mail()
 
 
 # load configations based on the given config_name
@@ -29,14 +32,24 @@ def create_app(config_name):
             SECRET_KEY=os.getenv('SECRET_KEY'),
             SQLALCHEMY_DATABASE_URI=os.getenv('SQLALCHEMY_DATABASE_URI')
         )
+        app.config.update(
+        MAIL_SERVER = 'smtp.gmail.com',
+        MAIL_PORT = 465,
+        MAIL_USE_SSL = True,
+        MAIL_USERNAME = 'katerak2013@gmail.com',
+        MAIL_PASSWORD = 'kthadmin2017#'
+        )
+
     else:
         app = Flask(__name__, instance_relative_config=True)
+        # mail = Mail(app)
         app.config.from_object(app_config[config_name])
         app.config.from_pyfile('config.py')
 
     app.static_folder = 'static'
     Bootstrap(app)
     db.init_app(app)
+    mail.init_app(app)
 
     login_manager.init_app(app)
     login_manager.login_message = "You must be logged in to access this page."
@@ -44,6 +57,7 @@ def create_app(config_name):
 
     migrate = Migrate(app, db)
 
+    # mail = Mail(app)
 
     from app import models
 
