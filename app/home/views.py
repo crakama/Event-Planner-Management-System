@@ -2,7 +2,8 @@
 
 from flask import abort, render_template,flash, redirect,url_for
 from flask_login import current_user, login_required
-
+from flask_mail import Mail, Message
+from app import mail
 from . import home
 from forms import SCSCommentForm, FMCommentForm, AMCommentForm, PMCommentForm, SBCommentForm
 from .. import db
@@ -25,7 +26,11 @@ def homepage():
     """
     Render the homepage template on the / route
     """
-    return render_template('home/index.html', title="Welcome")
+    msg = Message('Hello', sender = 'katerak2013@gmail.com', recipients = ['cate.rakama@gmail.com'])
+    msg.body = "Hello Flask message sent from Flask-Mail"
+    mail.send(msg)
+    return "Sent"
+    # return render_template('home/index.html', title="Welcome")
 
 @home.route('/eventdashboard', methods=['GET', 'POST'])
 @login_required
@@ -40,7 +45,6 @@ def eventdashboard():
     # if roles.name == "":
     #     del form.
 
-
     return render_template('admin/events/listevents.html',
                            events=events, title="Events")
 
@@ -53,17 +57,11 @@ def scscomment_event(id):
     """
 
     scscomment_event = True
-    # statusdata = {'title':'Status','status':['Open','Closed']}
 
     event = Event.query.get_or_404(id)
     form = SCSCommentForm(obj=event)
     if form.validate_on_submit():
         event.scscomment = form.scscomment.data
-        if form.appapproval.data == "True":
-            status = "Open"
-        status = "Closed"
-        event.appstatus = status
-        # event.appstatus = form.appapproval.data
         db.session.commit()
         flash('You have successfully edited an event.')
 
@@ -71,10 +69,6 @@ def scscomment_event(id):
         return redirect(url_for('home.eventdashboard'))
 
     form.scscomment.data = event.scscomment
-    # if form.appapproval.data == "True":
-    #     status = "Open"
-    # status = "Closed"
-    form.appapproval.data= event.appstatus 
 
     return render_template('admin/events/addeditevent.html', action="Edit",
                            scscomment_event=scscomment_event, form=form,
