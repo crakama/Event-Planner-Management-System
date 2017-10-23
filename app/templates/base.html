@@ -17,10 +17,6 @@
     <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
     <script src="//rawgit.com/wenzhixin/bootstrap-table/master/src/extensions/export/bootstrap-table-export.js"></script>
 
-
-
-
-
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top topnav" id ="nav" role="navigation">
@@ -40,10 +36,16 @@
                   {% if current_user.is_admin %}
                     <li><a href="{{ url_for('home.admin_dashboard') }}">Dashboard</a></li>
                     <li><a href="{{ url_for('admin.list_events') }}">Manage Events</a></li>
-                    <li><a href="{{ url_for('admin.list_tasks') }}">Manage Tasks</a></li>
+                    <li><a href="{{ url_for('admin.list_tasks') }}">Tasks</a></li>
                     <li><a href="{{ url_for('admin.list_remoteusers') }}">Manage Sub Team</a></li>
                     <li><a href="{{ url_for('admin.list_roles') }}">Create Roles</a></li>
+
+
                   {% else %}
+                      {% if current_user.is_scsadmin %}
+                       <li><a href="{{ url_for('home.list_tasks') }}">Manage Tasks</a></li>
+                       <li><a href="{{ url_for('home.eventdashboard') }}">Home</a></li>
+                         {% endif  %}
                     <li><a href="{{ url_for('home.eventdashboard') }}">Home</a></li>
                   {% endif %}
                   <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>

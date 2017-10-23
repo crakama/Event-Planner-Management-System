@@ -3,7 +3,9 @@ import os
 import unittest
 
 from flask_testing import TestCase
-from flask import abort, user_for
+# from flask import abort, user_for
+from flask import abort, url_for
+# from flask import abort, user_for
 from app import create_app, db
 from app.models import RemoteUser, Role, Event
 

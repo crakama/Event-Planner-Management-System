@@ -5,9 +5,9 @@ from flask_login import current_user, login_required
 from flask_mail import Mail, Message
 from app import mail
 from . import home
-from forms import SCSCommentForm, FMCommentForm, AMCommentForm, PMCommentForm, SBCommentForm, SendEmailForm
+from forms import SCSCommentForm, FMCommentForm, TaskForm, AMCommentForm, PMCommentForm, SBCommentForm, SendEmailForm
 from .. import db
-from ..models import Event, Role, RemoteUser
+from ..models import Event, Role, RemoteUser, Task
 
 # Each view handles requests to the specified URL
 
@@ -89,6 +89,10 @@ def scscomment_event(id):
     form = SCSCommentForm(obj=event)
     if form.validate_on_submit():
         event.scscomment = form.scscomment.data
+        if form.appapproval.data == "True":
+            status = "Open"
+        status = "Closed"
+        event.appstatus = status
         db.session.commit()
         flash('You have successfully edited an event.')
 
@@ -112,6 +116,155 @@ def scscomment_event(id):
     # form.sbcomment.data = event.sbcomment
 
 
+    ###############Task###################
+@home.route('/tasks/add/<int:id>', methods=['GET', 'POST'])
+@login_required
+def add_task(id):
+    """
+    Add a Task
+    """
+
+    add_event = True
+
+    event = Event.query.get_or_404(id)
+    # tasks = Task.query.get_or_404(id)
+    form = TaskForm()
+    if form.validate_on_submit():
+        task = Task(taskname=form.taskname.data,
+                    description=form.taskdescription.data,
+                    listeventid =id,
+                    taskowner=event)
+
+        try:
+            # add role to the database
+            db.session.add(task)
+            db.session.commit()
+            flash('You have successfully added a new task.')
+        except:
+            # in case role name already exists
+            flash('Error: task name already exists.')
+
+        return redirect(url_for('home.eventdashboard',id=id,task=task))
+
+    return render_template('admin/events/addeditevent.html', action="Edit",
+                           add_event=add_event, form=form,
+                           event=event, title="Add Task")
+
+@home.route('/task/list/<int:id>', methods=['GET', 'POST'])
+@login_required
+def select_tasks(id):
+    # check_admin()
+    """
+    List all tasks
+    """
+    # select_tasks =False
+    tasks = Task.query.filter(Task.listeventid==id).all()
+    # tasks = Task.query.filter_by(listeventid=id).all()
+    e_id = id
+
+
+    return render_template('home/tasks/listtasks.html',
+                           tasks=tasks, select_tasks=select_tasks,e_id=e_id, title='Tasks')
+# @home.route('/tasks/add/<int:id>', methods=['GET', 'POST'])
+# @login_required
+# def add_task(id):
+#     """
+#     Add a task to the database
+#     """
+#     # check_admin()
+#
+#     add_task = True
+#     # event = Event.query.get_or_404(id)
+#     form = TaskForm()
+#     if form.validate_on_submit():
+#         task = Task(taskname=form.name.data,
+#                     description=form.description.data)
+#
+#         try:
+#             # add task to the database
+#             db.session.add(task)
+#             db.session.commit()
+#             print id
+#             flash('You have successfully added a new task.')
+#             print id
+#         except:
+#             # in case task name already exists
+#             flash('Error: task name already exists.')
+#
+#         # redirect to the tasks page
+#         #  return redirect(url_for('home.list_tasks', id = id))
+#         return redirect(url_for('home.eventdashboard'))
+#
+#     # load tasks template
+#     return render_template('home/tasks/addedittask.html', add_task=add_task,
+#                            form=form,title='Edit Task')
+#
+
+
+# @home.route('/task/list/<int:id>', methods=['GET', 'POST'])
+# @login_required
+# def list_tasks(id):
+#     # check_admin()
+#     """
+#     List all tasks
+#     """
+#     # event = Event.query.get_or_404(id) query Task 4 a specific event ID
+#     tasks = Task.query.all()
+#     e_id = id
+#     # tasks = Task.query.filter(Task.id == id).all()
+#     # tasks = Task.query.event_id.get_or_404(id)
+#     # tasks = Task.query.filter(Task.event_id == id).all()
+#
+#     return render_template('home/tasks/listtasks.html',
+#                            e_id=e_id,tasks=tasks, title='Tasks')
+
+@home.route('/tasks/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_task(id):
+    """
+    Edit a task
+    """
+    # check_admin()
+
+    add_task = False
+
+    task = Task.query.get_or_404(id)
+    form = TaskForm(obj=task)
+    if form.validate_on_submit():
+        task.name = form.name.data
+        task.description = form.description.data
+        db.session.add(task)
+        db.session.commit()
+        flash('You have successfully edited the task.')
+
+        # redirect to the roles page
+        return redirect(url_for('home.list_tasks', id =id))
+
+    form.taskdescription.data = task.description
+    form.taskname.data = task.taskname
+    return render_template('home/tasks/addedittask.html', add_task=add_task,
+                           form=form, title="Edit Task")
+
+
+@home.route('/tasks/delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def delete_task(id):
+    """
+    Delete a task from the database
+    """
+    # check_admin()
+
+    task = Task.query.get_or_404(id)
+    db.session.delete(task)
+    db.session.commit()
+    flash('You have successfully deleted the task.')
+
+    # redirect to the tasks page
+    return redirect(url_for('home.list_tasks'))
+
+    return render_template(title="Delete Task")
+########################Task################################################
+
 @home.route('/deptreport')
 @login_required
 def deptreport():
@@ -119,3 +272,4 @@ def deptreport():
     Render the dashboard template on the /dashboard route
     """
     return render_template('home/deptreport.html', title="DeptReport")
+# mysql -u root -p

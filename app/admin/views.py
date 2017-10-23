@@ -4,7 +4,7 @@ from flask import abort, flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
 
 from . import admin
-from forms import EventForm, RemoteUserAssignForm, RoleForm, TaskForm
+from forms import EventForm, RemoteUserAssignForm, RoleForm,SendEmailForm
 from .. import db
 from ..models import Event, RemoteUser, Role,Task
 
@@ -208,7 +208,8 @@ def delete_task(id):
 
 #######################    Tasks ##############################################
 
-    ############################ Role Views ###################################
+
+############################## Role Views ###################################
 
 @admin.route('/roles')
 @login_required
@@ -330,7 +331,7 @@ def assign_remoteuser(id):
         remoteuser.role = form.role.data
         db.session.add(remoteuser)
         db.session.commit()
-        flash('You have successfully assigned a department and role.')
+        flash('You have successfully assigned a remoteuser and role.')
 
         # redirect to the roles page
         return redirect(url_for('admin.list_remoteusers'))
@@ -338,3 +339,34 @@ def assign_remoteuser(id):
     return render_template('admin/remoteusers/addeditrm_users.html',
                            remoteuser=remoteuser, form=form,
                            title='Assign A RemoteUser')
+
+@admin.route('/events/sendemail/', methods=['GET', 'POST'])
+@login_required
+def pmsend_email():
+    """
+    Send Email
+    """
+
+    pmsend_email = True
+
+    event = Event.query.get_or_404(id)
+    form = SendEmailForm(obj=event)
+
+    if form.validate_on_submit():
+        msg = Message('Hello', sender = 'katerak2013@gmail.com', recipients = [form.emailrecepient.data])
+        msg.body = form.scssendemail.data
+        mail.send(msg)
+        event.emailsent = form.scssendemail.data
+        db.session.commit()
+        flash('You have successfully Sent an Email.')
+
+        # redirect to the events page
+        # return redirect(url_for('admin.eventdashboard'))
+        return redirect(url_for('admin.list_tasks'))
+
+    form.scssendemail.data = event.emailsent
+    form.emailrecepient.data = event.emailrecepient
+
+    return render_template('admin/events/addeditevent.html', action="Edit",
+                           pmsend_email=pmsend_email, form=form,
+                           event=event, title="Edit Event")
