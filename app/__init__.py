@@ -73,6 +73,9 @@ def create_app(config_name):
     from .home import home as home_blueprint
     app.register_blueprint(home_blueprint)
 
+    # from .scsadmin import scsadmin as scsadmin_blueprint
+    # app.register_blueprint(scsadmin_blueprint)
+
 
     @app.errorhandler(403)
     def forbidden(error):

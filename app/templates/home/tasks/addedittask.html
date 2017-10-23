@@ -6,7 +6,7 @@
     {% if add_event %}
         Add Role
     {% else %}
-        Edit Role
+        Manage Task
     {% endif %}
 {% endblock %}
 {% block body %}
@@ -16,9 +16,9 @@
       <div class="inner">
         <div class="center">
             {% if add_role %}
-                <h1>Add Role</h1>
+                <h1>Add </h1>
             {% else %}
-                <h1>Edit Role</h1>
+                <h1>Manage Task</h1>
             {% endif %}
             <br/>
             {{ wtf.quick_form(form) }}

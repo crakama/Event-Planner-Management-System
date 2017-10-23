@@ -95,7 +95,10 @@
                         <th width="50%"> PM Comments </th>
                         <th width="50%"> SubTeam Comments </th>
                         <th width="50%"> Event Status </th>
-
+                        <th width="50%"> Email Receiver </th>
+                        <th width="50%"> Email Sent </th>
+                        <th width="50%"> Create or Edit Tasks </th>
+                        <th width="50%">  View Tasks </th>
                         {% if scsname2 == scsname3 %}
                         <th width="50%"> Email Receiver </th>
                         <th width="50%"> Email Sent </th>
@@ -120,7 +123,20 @@
                         <td> {{ event.pmcomment }} </td>
                         <td> {{ event.sbcomment }} </td>
                         <td> {{ event.appstatus }}  </td>
-
+                        <td> {{ event.emailrecepient }} </td>
+                        <td> {{ event.emailsent }} </td>
+                        <td>
+                          <a href="{{ url_for('home.add_task',id=event.id) }}">
+                            <i class="fa fa-pencil"> Manage</i>
+                          </a>
+                        </td>
+                        <td>
+                          <a href="{{ url_for('home.select_tasks', id=event.id) }}">
+                            <i class="fa fa-pencil"> View</i>
+                          </a>
+                        </td>
+                        <!-- <td> {{ event.task_id }} </td> -->
+                        <!-- <td> {{ event.task }} </td> -->
                         {% if scsname2 == scsname3 %}
                         <td> {{ event.emailrecepient }} </td>
                         <td> {{ event.emailsent }} </td>
@@ -135,6 +151,11 @@
                           </a>
                         </td>
                         {% else %}
+                        <td>
+                          <a href="{{ url_for('home.scssend_email', id=event.id) }}">
+                            <i class="fa fa-pencil"></i> Send Email
+                          </a>
+                        </td>
                         <td>
                           <a href="{{ url_for('home.scscomment_event', id=event.id) }}">
                             <i class="fa fa-pencil"></i> Add Comment

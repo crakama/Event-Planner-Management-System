@@ -23,13 +23,13 @@ class EventForm(FlaskForm):
     sbcomment = StringField('AM Comments')
     submit = SubmitField('Submit')
 
-class TaskForm(FlaskForm):
-    """
-    Form for admin to add or edit a role
-    """
-    name = StringField('Name of Task', validators=[DataRequired()])
-    description = StringField('Description', validators=[DataRequired()])
-    submit = SubmitField('Submit')
+# class TaskForm(FlaskForm):
+#     """
+#     Form for admin to add or edit a role
+#     """
+#     name = StringField('Name of Task', validators=[DataRequired()])
+#     description = StringField('Description', validators=[DataRequired()])
+#     submit = SubmitField('Submit')
 
 class RoleForm(FlaskForm):
     """
@@ -37,6 +37,14 @@ class RoleForm(FlaskForm):
     """
     name = StringField('Name', validators=[DataRequired()])
     description = StringField('Description', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class SendEmailForm(FlaskForm):
+    """
+    Form for admin to add or edit an event
+    """
+    scssendemail = StringField('Email Subject')
+    emailrecepient = StringField('Email Recepients')
     submit = SubmitField('Submit')
 
 class RemoteUserAssignForm(FlaskForm):

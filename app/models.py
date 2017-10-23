@@ -20,6 +20,7 @@ class RemoteUser(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     is_admin = db.Column(db.Boolean, default=False)
+    is_scsadmin = db.Column(db.Boolean, default=False)
 
     @property
     def password(self):
@@ -71,10 +72,14 @@ class Event(db.Model):
     pmcomment = db.Column(db.String(200))
     sbcomment = db.Column(db.String(200))
     appstatus = db.Column(db.String(50))
+    task = db.Column(db.String(50))
     emailsent = db.Column(db.String(200))
     emailrecepient= db.Column(db.String(50))
-    # remoteusers = db.relationship('RemoteUser', backref='events',
-    #                             lazy='dynamic')
+    task_id = db.relationship('Task', backref='taskowner',
+                                lazy='dynamic')
+    # task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
+
+
 
     def __repr__(self):
         return '<Event: {}>'.format(self.fullnames)
@@ -90,8 +95,11 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     taskname = db.Column(db.String(60), unique=True)
     description = db.Column(db.String(200))
-    # roles = db.relationship('Role', backref='roles',
+    listeventid = db.Column(db.Integer,index=True, unique=True)
+    event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
+    # event_id = db.relationship('task', backref='events',
     #                             lazy='dynamic')
+
 #######################Task###################
 
 

@@ -7,6 +7,17 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
 from ..models import Event, Role
 
+class TaskForm(FlaskForm):
+    """
+    Form for admin to add or edit a role
+    """
+    associatedevent = StringField('Event Name', validators=[DataRequired()])
+    eventdesc = StringField('Event Description', validators=[DataRequired()])
+    taskname = StringField('Name of Task', validators=[DataRequired()])
+    taskdescription = StringField('Description', validators=[DataRequired()])
+    # taskowner= IntegerField('Associated Event', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
 class SCSCommentForm(FlaskForm):
     """
     Form for admin to add or edit an event
