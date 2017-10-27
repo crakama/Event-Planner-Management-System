@@ -91,16 +91,17 @@ def scscomment_event(id):
         event.scscomment = form.scscomment.data
         if form.appapproval.data == "True":
             status = "Open"
-        status = "Closed"
+        else:
+            status = "Closed"
         event.appstatus = status
         db.session.commit()
-        flash('You have successfully edited an event.')
+        flash('You have successfully added a event.')
 
         # redirect to the events page
         return redirect(url_for('home.eventdashboard'))
 
     form.scscomment.data = event.scscomment
-
+    form.appapproval.data= event.appstatus
     return render_template('admin/events/addeditevent.html', action="Edit",
                            scscomment_event=scscomment_event, form=form,
                            event=event, title="Edit Event")
@@ -165,58 +166,7 @@ def select_tasks(id):
 
     return render_template('home/tasks/listtasks.html',
                            tasks=tasks, select_tasks=select_tasks,e_id=e_id, title='Tasks')
-# @home.route('/tasks/add/<int:id>', methods=['GET', 'POST'])
-# @login_required
-# def add_task(id):
-#     """
-#     Add a task to the database
-#     """
-#     # check_admin()
-#
-#     add_task = True
-#     # event = Event.query.get_or_404(id)
-#     form = TaskForm()
-#     if form.validate_on_submit():
-#         task = Task(taskname=form.name.data,
-#                     description=form.description.data)
-#
-#         try:
-#             # add task to the database
-#             db.session.add(task)
-#             db.session.commit()
-#             print id
-#             flash('You have successfully added a new task.')
-#             print id
-#         except:
-#             # in case task name already exists
-#             flash('Error: task name already exists.')
-#
-#         # redirect to the tasks page
-#         #  return redirect(url_for('home.list_tasks', id = id))
-#         return redirect(url_for('home.eventdashboard'))
-#
-#     # load tasks template
-#     return render_template('home/tasks/addedittask.html', add_task=add_task,
-#                            form=form,title='Edit Task')
-#
 
-
-# @home.route('/task/list/<int:id>', methods=['GET', 'POST'])
-# @login_required
-# def list_tasks(id):
-#     # check_admin()
-#     """
-#     List all tasks
-#     """
-#     # event = Event.query.get_or_404(id) query Task 4 a specific event ID
-#     tasks = Task.query.all()
-#     e_id = id
-#     # tasks = Task.query.filter(Task.id == id).all()
-#     # tasks = Task.query.event_id.get_or_404(id)
-#     # tasks = Task.query.filter(Task.event_id == id).all()
-#
-#     return render_template('home/tasks/listtasks.html',
-#                            e_id=e_id,tasks=tasks, title='Tasks')
 
 @home.route('/tasks/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
