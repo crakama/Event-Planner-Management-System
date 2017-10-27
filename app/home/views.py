@@ -21,6 +21,16 @@ def admin_dashboard():
 
     return render_template('home/admin_dashboard.html', title="Dashboard")
 
+# admin dashboard view
+@home.route('/scsadmin/dashboard')
+@login_required
+def scsadmin_dashboard():
+    # prevent non-scsadmins from accessing the page
+    if not current_user.is_scsadmin:
+        abort(403)
+
+    return render_template('home/scsadmin_dashboard.html', title="Dashboard")
+
 @home.route('/')
 def homepage():
     """
@@ -166,6 +176,16 @@ def select_tasks(id):
 
     return render_template('home/tasks/listtasks.html',
                            tasks=tasks, select_tasks=select_tasks,e_id=e_id, title='Tasks')
+@home.route('/tasks')
+@login_required
+def list_tasks():
+    # check_admin()
+    """
+    List all tasks
+    """
+    tasks = Task.query.all()
+    return render_template('admin/tasks/listtasks.html',
+                           tasks=tasks, title='Tasks')
 
 
 @home.route('/tasks/edit/<int:id>', methods=['GET', 'POST'])

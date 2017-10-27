@@ -53,6 +53,8 @@ def login():
             # redirect to the appropriate dashboard page after login
             if remotuser.is_admin:
                 return redirect(url_for('home.admin_dashboard'))
+            elif remotuser.is_scsadmin:
+                return redirect(url_for('home.scsadmin_dashboard'))
             else:
                 return redirect(url_for('home.eventdashboard'))
 
