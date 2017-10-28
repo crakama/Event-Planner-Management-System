@@ -63,6 +63,7 @@ class StaffRequest(db.Model):
     departmentname = db.Column(db.String(50))
     jobtitle = db.Column(db.String(50))
     jobdescription = db.Column(db.String(200))
+    hrcomment = db.Column(db.String(200))
     requeststatus = db.Column(db.String(50))
 
     def __repr__(self):

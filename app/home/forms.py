@@ -17,7 +17,15 @@ class TaskForm(FlaskForm):
     taskdescription = StringField('Description', validators=[DataRequired()])
     # taskowner= IntegerField('Associated Event', validators=[DataRequired()])
     submit = SubmitField('Submit')
-    
+
+class HrApprovalForm(FlaskForm):
+    """
+    Form for
+    """
+    hrcomment = StringField('HR Comment', validators=[DataRequired()])
+    requestapproval = RadioField('Contract Type', choices=[('True','Accept'),('False','Reject')])
+    submit = SubmitField('Submit')
+
 class StaffRequestForm(FlaskForm):
     """
     Form for admin to

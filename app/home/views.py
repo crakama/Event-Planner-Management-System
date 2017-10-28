@@ -5,7 +5,7 @@ from flask_login import current_user, login_required
 from flask_mail import Mail, Message
 from app import mail
 from . import home
-from forms import SCSCommentForm, FMCommentForm, TaskForm
+from forms import SCSCommentForm, FMCommentForm, TaskForm, HrApprovalForm
 from forms import AMCommentForm, PMCommentForm, SBCommentForm, SendEmailForm,StaffRequestForm
 from .. import db
 from ..models import Event, Role, RemoteUser, Task, StaffRequest
@@ -39,8 +39,9 @@ def hradmin_dashboard():
     # prevent non-scsadmins from accessing the page
     # if not current_user.is_hradmin:
     #     abort(403)
+    staffrequests = StaffRequest.query.all()
 
-    return render_template('admin/events/liststaffrequest.html', title="Dashboard")
+    return render_template('admin/events/liststaffrequest.html',staffrequests=staffrequests, title="Dashboard")
 
 @home.route('/')
 def homepage():
@@ -171,6 +172,31 @@ def add_staffrequest():
     return render_template('admin/events/addeditevent.html', action="Edit",
                            add_staffrequest=add_staffrequest, form=form,
                             title="Add Task")
+
+@home.route('/staffrequests/approvals/<int:id>', methods=['GET', 'POST'])
+@login_required
+def hrapproval_request(id):
+    """
+    Accept or reject
+    """
+    staffrequests = StaffRequest.query.get_or_404(id)
+    form = HrApprovalForm(obj=staffrequests)
+    if form.validate_on_submit():
+        if form.requestapproval.data == "True":
+            requestapproval = "Approved"
+        else:
+            requestapproval = "Rejected"
+        staffrequests.hrcomment = form.hrcomment.data
+        staffrequests.requeststatus = requestapproval
+        db.session.commit()
+        flash('You have successfully reviwed a request.')
+
+        # redirect to the events page
+        return redirect(url_for('home.list_staffrequest'))
+
+    return render_template('admin/events/addeditevent.html', action="Edit",
+                           form=form, staffrequests=staffrequests, title="Edit Event")
+
 ############# Task Request ################
 
 #################Task###################

@@ -79,6 +79,7 @@
                  <th width="15%"> Job Title </th>
                  <th width="50%"> Job Description</th>
                  <th width="15%"> Request Status </th>
+                 <th width="15%"> Review Request </th>
 
                </tr>
              </thead>
@@ -91,6 +92,11 @@
                  <td> {{ staffrequest.jobtitle }} </td>
                  <td> {{ staffrequest.jobdescription }} </td>
                  <td> {{ staffrequest.requeststatus }} </td>
+                 <td>
+                   <a href="{{ url_for('home.hrapproval_request', id=staffrequest.id) }}">
+                     <i class="fa fa-pencil"></i> Review
+                   </a>
+                 </td>
                </tr>
              {% endfor %}
              </tbody>
