@@ -21,6 +21,7 @@ class RemoteUser(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     is_admin = db.Column(db.Boolean, default=False)
     is_scsadmin = db.Column(db.Boolean, default=False)
+    is_hradmin = db.Column(db.Boolean, default=False)
 
     @property
     def password(self):
@@ -50,8 +51,22 @@ class RemoteUser(UserMixin, db.Model):
 def load_user(user_id):
     return RemoteUser.query.get(int(user_id))
 
+class StaffRequest(db.Model):
+    """
+    Create Staff request Table:
+    """
+    __tablename__ = 'staffrequests'
 
+    id = db.Column(db.Integer,primary_key=True)
+    requestname = db.Column(db.String(50))
+    contracttype = db.Column(db.String(50))
+    departmentname = db.Column(db.String(50))
+    jobtitle = db.Column(db.String(50))
+    jobdescription = db.Column(db.String(200))
+    requeststatus = db.Column(db.String(50))
 
+    def __repr__(self):
+        return '<StaffRequest: {}>'.format(self.requestname)
 
 class Event(db.Model):
     """
@@ -79,8 +94,6 @@ class Event(db.Model):
                                 lazy='dynamic')
     # task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
 
-
-
     def __repr__(self):
         return '<Event: {}>'.format(self.fullnames)
 ############Task#################################
@@ -89,7 +102,6 @@ class Task(db.Model):
     """
     Create a Task table
     """
-
     __tablename__ = 'tasks'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -100,9 +112,7 @@ class Task(db.Model):
     # event_id = db.relationship('task', backref='events',
     #                             lazy='dynamic')
 
-#######################Task###################
-
-
+#######################Task ###################
 class Role(db.Model):
     """
     Create a Role table

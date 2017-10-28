@@ -1,7 +1,7 @@
 # app/admin/forms.py
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField
+from wtforms import StringField, SubmitField, IntegerField, RadioField
 from wtforms.validators import DataRequired
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
@@ -22,14 +22,6 @@ class EventForm(FlaskForm):
     pmcomment = StringField('STeam Comments')
     sbcomment = StringField('AM Comments')
     submit = SubmitField('Submit')
-
-# class TaskForm(FlaskForm):
-#     """
-#     Form for admin to add or edit a role
-#     """
-#     name = StringField('Name of Task', validators=[DataRequired()])
-#     description = StringField('Description', validators=[DataRequired()])
-#     submit = SubmitField('Submit')
 
 class RoleForm(FlaskForm):
     """

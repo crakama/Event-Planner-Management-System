@@ -1,0 +1,116 @@
+<!-- app/templates/admin/departments/departments.html -->
+
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}Requests{% endblock %}
+{% block body %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+       <div class="inner"> <!---Main Inner ------->
+        <br/>
+        {{ utils.flashed_messages() }}
+        <br/>
+        <hr class="intro-divider">
+        <div class="center"> <!--- if current_user.is_admin & Other users sandwitched in <div class="center">---->
+         {% if current_user.is_scsadmin %}
+
+             <h3 style="text-align:center;">List of Staff Requests</h3>
+             {% if staffrequests %}
+             <table class="table table-striped table-bordered"
+                          data-url="#"
+                          data-toggle="table" data-toolbar="true"
+                          data-show-export="true" data-search="true"
+                          data-query-params="queryParams"
+                          data-pagination="true" >
+              <thead>
+                <tr style="background-color: #4f7386; color: white;">
+
+                  <th width="15%"> Request Name </th>
+                  <th width="15%"> Contract Type </th>
+                  <th width="15%"> Department Name </th>
+                  <th width="15%"> Job Title </th>
+                  <th width="50%"> Job Description</th>
+                  <th width="15%"> Request Status </th>
+
+                </tr>
+              </thead>
+              <tbody>
+              {% for staffrequest in staffrequests %}
+                <tr>
+                  <td> {{ staffrequest.requestname }} </td>
+                  <td> {{ staffrequest.contracttype }} </td>
+                  <td> {{ staffrequest.departmentname }} </td>
+                  <td> {{ staffrequest.jobtitle }} </td>
+                  <td> {{ staffrequest.jobdescription }} </td>
+                  <td> {{ staffrequest.requeststatus }} </td>
+
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+            {% else %}
+            <div style="text-align: center">
+              <h3> No Requests have been added. </h3>
+              <hr class="intro-divider">
+              {% endif %}
+              <a href="{{ url_for('admin.add_event') }}" class="btn btn-default btn-lg">
+                <i class="fa fa-plus"></i>
+                Add a Request
+              </a>
+            </div>
+          </div>
+          {% else %}
+          {% if current_user.is_hradmin %}
+          <h3 style="text-align:center;">List of Staff Requests</h3>
+            {% if staffrequests %}
+            <table class="table table-striped table-bordered"
+                         data-url="#"
+                         data-toggle="table" data-toolbar="true"
+                         data-show-export="true" data-search="true"
+                         data-query-params="queryParams"
+                         data-pagination="true" >
+             <thead>
+               <tr style="background-color: #4f7386; color: white;">
+
+                 <th width="15%"> Request Name </th>
+                 <th width="15%"> Contract Type </th>
+                 <th width="15%"> Department Name </th>
+                 <th width="15%"> Job Title </th>
+                 <th width="50%"> Job Description</th>
+                 <th width="15%"> Request Status </th>
+
+               </tr>
+             </thead>
+             <tbody>
+             {% for staffrequest in staffrequests %}
+               <tr>
+                 <td> {{ staffrequest.requestname }} </td>
+                 <td> {{ staffrequest.contracttype }} </td>
+                 <td> {{ staffrequest.departmentname }} </td>
+                 <td> {{ staffrequest.jobtitle }} </td>
+                 <td> {{ staffrequest.jobdescription }} </td>
+                 <td> {{ staffrequest.requeststatus }} </td>
+               </tr>
+             {% endfor %}
+             </tbody>
+           </table>
+           <div style="text-align: center">
+          {% else %} <!--else if no staffrequests -->
+           <div style="text-align: center">
+             <h3> No Requests have been added. </h3>
+             <hr class="intro-divider">
+           <a href="{{ url_for('admin.add_event') }}" class="btn btn-default btn-lg">
+             <i class="fa fa-plus"></i>
+             Add a Request
+           </a>
+           {% endif %}<!--end if staffrequests -->
+         </div>
+         </div>
+         {% endif %}<!--end if is hr admin-->
+         </div>
+         {% endif %}<!--end if admin-->
+    </div> <!--- Main Inner ----->
+  </div>
+</div>
+{% endblock %}

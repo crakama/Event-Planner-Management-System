@@ -55,6 +55,8 @@ def login():
                 return redirect(url_for('home.admin_dashboard'))
             elif remotuser.is_scsadmin:
                 return redirect(url_for('home.scsadmin_dashboard'))
+            elif remotuser.is_hradmin:
+                return redirect(url_for('home.hradmin_dashboard'))
             else:
                 return redirect(url_for('home.eventdashboard'))
 

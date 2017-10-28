@@ -5,9 +5,10 @@ from flask_login import current_user, login_required
 from flask_mail import Mail, Message
 from app import mail
 from . import home
-from forms import SCSCommentForm, FMCommentForm, TaskForm, AMCommentForm, PMCommentForm, SBCommentForm, SendEmailForm
+from forms import SCSCommentForm, FMCommentForm, TaskForm
+from forms import AMCommentForm, PMCommentForm, SBCommentForm, SendEmailForm,StaffRequestForm
 from .. import db
-from ..models import Event, Role, RemoteUser, Task
+from ..models import Event, Role, RemoteUser, Task, StaffRequest
 
 # Each view handles requests to the specified URL
 
@@ -30,6 +31,16 @@ def scsadmin_dashboard():
         abort(403)
 
     return render_template('home/scsadmin_dashboard.html', title="Dashboard")
+
+# admin dashboard view
+@home.route('/hradmin/dashboard')
+@login_required
+def hradmin_dashboard():
+    # prevent non-scsadmins from accessing the page
+    # if not current_user.is_hradmin:
+    #     abort(403)
+
+    return render_template('admin/events/liststaffrequest.html', title="Dashboard")
 
 @home.route('/')
 def homepage():
@@ -85,6 +96,7 @@ def scssend_email(id):
                            scssend_email=scssend_email, form=form,
                            event=event, title="Edit Event")
 
+
 # -----------------------------
 @home.route('/events/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -126,8 +138,42 @@ def scscomment_event(id):
     # form.pmcomment.data = event.pmcomment
     # form.sbcomment.data = event.sbcomment
 
+############## Staff Request################
+@home.route('/staffrequests/add', methods=['GET', 'POST'])
+@login_required
+def add_staffrequest():
+    """
+    Add a request
+    """
+    # add_staffrequest = True
+    form = StaffRequestForm()
+    if form.validate_on_submit():
+        if form.contracttype.data == "True":
+            ctype = "Full Time"
+        else:
+            ctype = "Part Time"
+        staffrequest = StaffRequest(requestname=form.requestname.data,
+                    contracttype=ctype,
+                    departmentname=form.departmentname.data,
+                    jobtitle=form.jobtitle.data,
+                    jobdescription=form.jobdescription.data)
+        try:
+            # add role to the database
+            db.session.add(staffrequest)
+            db.session.commit()
+            flash('You have successfully sent staff request!')
+        except:
+            # in case role name already exists
+            flash('Error: staff request name already exists.')
 
-    ###############Task###################
+        return redirect(url_for('home.eventdashboard'))
+
+    return render_template('admin/events/addeditevent.html', action="Edit",
+                           add_staffrequest=add_staffrequest, form=form,
+                            title="Add Task")
+############# Task Request ################
+
+#################Task###################
 @home.route('/tasks/add/<int:id>', methods=['GET', 'POST'])
 @login_required
 def add_task(id):
@@ -160,6 +206,16 @@ def add_task(id):
     return render_template('admin/events/addeditevent.html', action="Edit",
                            add_event=add_event, form=form,
                            event=event, title="Add Task")
+@home.route('/tasks')
+@login_required
+def list_staffrequest():
+    # check_admin()
+    """
+    List all staff requests
+    """
+    staffrequests = StaffRequest.query.all()
+    return render_template('admin/events/liststaffrequest.html',
+                           staffrequests=staffrequests, title='Tasks')
 
 @home.route('/task/list/<int:id>', methods=['GET', 'POST'])
 @login_required

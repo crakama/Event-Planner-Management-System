@@ -45,7 +45,8 @@
 
                        <li><a href="{{ url_for('home.eventdashboard') }}">Events</a></li>
                        <li><a href="{{ url_for('home.list_tasks') }}">Tasks</a></li>
-                       <li><a href="#">Staff Recruitment Request</a></li>
+                       <li><a href="{{ url_for('home.list_staffrequest') }}">List of Staff Recruitment Requests</a></li>
+                       <li><a href="{{ url_for('home.add_staffrequest') }}">Staff Recruitment Request</a></li>
                          {% endif  %}
 
                   {% endif %}
