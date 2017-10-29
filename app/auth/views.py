@@ -57,6 +57,10 @@ def login():
                 return redirect(url_for('home.scsadmin_dashboard'))
             elif remotuser.is_hradmin:
                 return redirect(url_for('home.hradmin_dashboard'))
+            elif remotuser.is_fmadmin:
+                return redirect(url_for('home.fmadmin_dashboard'))
+            elif remotuser.is_fmadmin:
+                return redirect(url_for('home.eventdashboard'))            
             else:
                 return redirect(url_for('home.eventdashboard'))
 

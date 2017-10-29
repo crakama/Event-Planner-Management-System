@@ -36,12 +36,17 @@ def scsadmin_dashboard():
 @home.route('/hradmin/dashboard')
 @login_required
 def hradmin_dashboard():
-    # prevent non-scsadmins from accessing the page
-    # if not current_user.is_hradmin:
-    #     abort(403)
     staffrequests = StaffRequest.query.all()
 
     return render_template('admin/events/liststaffrequest.html',staffrequests=staffrequests, title="Dashboard")
+
+# admin dashboard view
+@home.route('/fmadmin/dashboard')
+@login_required
+def fmadmin_dashboard():
+
+    return render_template('home/scsadmin_dashboard.html', title="Dashboard")
+
 
 @home.route('/')
 def homepage():
@@ -112,11 +117,6 @@ def scscomment_event(id):
     form = SCSCommentForm(obj=event)
     if form.validate_on_submit():
         event.scscomment = form.scscomment.data
-        if form.appapproval.data == "True":
-            status = "Open"
-        else:
-            status = "Closed"
-        event.appstatus = status
         db.session.commit()
         flash('You have successfully added a event.')
 
@@ -124,20 +124,84 @@ def scscomment_event(id):
         return redirect(url_for('home.eventdashboard'))
 
     form.scscomment.data = event.scscomment
-    form.appapproval.data= event.appstatus
     return render_template('admin/events/addeditevent.html', action="Edit",
                            scscomment_event=scscomment_event, form=form,
                            event=event, title="Edit Event")
 # -----------------
-    # event.fmcomment = form.fmcomment.data
-    # event.amcomment = form.amcomment.data
-    # event.pmcomment = form.pmcomment.data
-    # event.sbcomment = form.sbcomment.data
-    #
-    # form.fmcomment.data = event.fmcomment
-    # form.amcomment.data = event.amcomment
-    # form.pmcomment.data = event.pmcomment
-    # form.sbcomment.data = event.sbcomment
+@home.route('/events/fmedit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def fmcomment_event(id):
+    """
+    Edit an Event
+    """
+
+    fmcomment_event = True
+
+    event = Event.query.get_or_404(id)
+    form = FMCommentForm(obj=event)
+    if form.validate_on_submit():
+        event.fmcomment = form.fmcomment.data
+        db.session.commit()
+        flash('You have successfully added a event.')
+
+        # redirect to the events page
+        return redirect(url_for('home.eventdashboard'))
+
+    form.fmcomment.data = event.fmcomment
+    return render_template('admin/events/addeditevent.html', action="Edit",
+                           fmcomment_event=fmcomment_event, form=form,
+                           event=event, title="Edit Event")
+# -----------------
+@home.route('/events/amedit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def amcomment_event(id):
+    """
+    Edit an Event
+    """
+
+    amcomment_event = True
+
+    event = Event.query.get_or_404(id)
+    form = AMCommentForm(obj=event)
+    if form.validate_on_submit():
+        if form.appapproval.data == "True":
+            appstatus = "Accepted"
+        else:
+            appstatus = "Rejected"
+        event.amcomment = form.amcomment.data
+        event.appstatus =appstatus
+        db.session.commit()
+        flash('You have successfully added a event.')
+
+        # redirect to the events page
+        return redirect(url_for('home.eventdashboard'))
+
+    form.amcomment.data = event.amcomment
+    return render_template('admin/events/addeditevent.html', action="Edit",
+                           amcomment_event=amcomment_event, form=form,
+                           event=event, title="Edit Event")
+@home.route('/events/pmedit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def pmcomment_event(id):
+    """
+    Edit an Event
+    """
+
+    pmcomment_event = True
+
+    event = Event.query.get_or_404(id)
+    form = PMCommentForm(obj=event)
+    if form.validate_on_submit():
+        event.pmcomment = form.pmcomment.data
+        db.session.commit()
+        flash('You have successfully added a event.')
+        return redirect(url_for('home.eventdashboard'))
+
+    form.pmcomment.data = event.pmcomment
+    return render_template('admin/events/addeditevent.html', action="Edit",
+                           pmcomment_event=pmcomment_event, form=form,
+                           event=event, title="Edit Event")
+# -----------------
 
 ############## Staff Request################
 @home.route('/staffrequests/add', methods=['GET', 'POST'])
@@ -258,10 +322,9 @@ def select_tasks(id):
 
     return render_template('home/tasks/listtasks.html',
                            tasks=tasks, select_tasks=select_tasks,e_id=e_id, title='Tasks')
-@home.route('/tasks')
+@home.route('/alltasks')
 @login_required
-def list_tasks():
-    # check_admin()
+def alltasks():
     """
     List all tasks
     """

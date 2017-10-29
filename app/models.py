@@ -22,6 +22,9 @@ class RemoteUser(UserMixin, db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     is_scsadmin = db.Column(db.Boolean, default=False)
     is_hradmin = db.Column(db.Boolean, default=False)
+    is_fmadmin = db.Column(db.Boolean, default=False)
+    is_amadmin = db.Column(db.Boolean, default=False)
+    is_pmadmin = db.Column(db.Boolean, default=False)
 
     @property
     def password(self):

@@ -13,7 +13,7 @@
         <br/>
         <hr class="intro-divider">
         <div class="center"> <!--- if current_user.is_admin & Other users sandwitched in <div class="center">---->
-         {% if current_user.is_scsadmin %}
+         {% if current_user.is_pmadmin %}
 
              <h3 style="text-align:center;">List of Staff Requests</h3>
              {% if staffrequests %}
@@ -32,6 +32,7 @@
                   <th width="15%"> Job Title </th>
                   <th width="50%"> Job Description</th>
                   <th width="15%"> Request Status </th>
+                  <th width="50%"> HR Comments</th>
 
                 </tr>
               </thead>
@@ -44,7 +45,7 @@
                   <td> {{ staffrequest.jobtitle }} </td>
                   <td> {{ staffrequest.jobdescription }} </td>
                   <td> {{ staffrequest.requeststatus }} </td>
-
+                  <td> {{ staffrequest.hrcomment }} </td>
                 </tr>
               {% endfor %}
               </tbody>
@@ -79,8 +80,9 @@
                  <th width="15%"> Job Title </th>
                  <th width="50%"> Job Description</th>
                  <th width="15%"> Request Status </th>
-                 <th width="15%"> Review Request </th>
 
+                 <th width="50%"> HR Comments </th>
+                 <th width="15%"> Review Request </th>
                </tr>
              </thead>
              <tbody>
@@ -92,6 +94,7 @@
                  <td> {{ staffrequest.jobtitle }} </td>
                  <td> {{ staffrequest.jobdescription }} </td>
                  <td> {{ staffrequest.requeststatus }} </td>
+                 <td> {{ staffrequest.hrcomment }} </td>
                  <td>
                    <a href="{{ url_for('home.hrapproval_request', id=staffrequest.id) }}">
                      <i class="fa fa-pencil"></i> Review

@@ -33,23 +33,27 @@
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
-                  {% if current_user.is_admin %}
+                  {% if current_user.is_admin -%}
                     <li><a href="{{ url_for('home.admin_dashboard') }}">Dashboard</a></li>
                     <li><a href="{{ url_for('admin.list_events') }}">Manage Events</a></li>
                     <li><a href="{{ url_for('admin.list_tasks') }}">Tasks</a></li>
                     <li><a href="{{ url_for('admin.list_remoteusers') }}">Manage Sub Team</a></li>
                     <li><a href="{{ url_for('admin.list_roles') }}">Create Roles</a></li>
+                  {% elif current_user.is_pmadmin -%}
+                  <li><a href="{{ url_for('home.eventdashboard') }}">Events</a></li>
+                  <li><a href="{{ url_for('home.alltasks') }}">Tasks</a></li>
+                  <li><a href="{{ url_for('home.list_staffrequest') }}">List of Staff Recruitment Requests</a></li>
+                  <li><a href="{{ url_for('home.add_staffrequest') }}">Staff Recruitment Request</a></li>
 
-                  {% else %}
-                      {% if current_user.is_scsadmin %}
+                  {% elif current_user.is_scsadmin -%}
 
                        <li><a href="{{ url_for('home.eventdashboard') }}">Events</a></li>
-                       <li><a href="{{ url_for('home.list_tasks') }}">Tasks</a></li>
-                       <li><a href="{{ url_for('home.list_staffrequest') }}">List of Staff Recruitment Requests</a></li>
-                       <li><a href="{{ url_for('home.add_staffrequest') }}">Staff Recruitment Request</a></li>
-                         {% endif  %}
 
-                  {% endif %}
+                  {% elif current_user.is_fmadmin -%}
+                  <li><a href="{{ url_for('home.eventdashboard') }}">Events</a></li>
+
+
+                  {%- endif %}
                   <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                   <li><a><i class="fa fa-user"></i>  Hi, {{ current_user.username }}!</a></li>
                 {% else %}

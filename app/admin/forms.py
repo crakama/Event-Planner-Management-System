@@ -16,11 +16,11 @@ class EventForm(FlaskForm):
     nationalid = IntegerField('ID Number', validators=[DataRequired()])
     deptamount = IntegerField('Amount', validators=[DataRequired()])
     description = StringField('EventDescription', validators=[DataRequired()])
-    scscomment = StringField('SCS Comments')
-    fmcomment = StringField('FM Comments')
-    amcomment = StringField('PM Comments')
-    pmcomment = StringField('STeam Comments')
-    sbcomment = StringField('AM Comments')
+    # scscomment = StringField('SCS Comments')
+    # fmcomment = StringField('FM Comments')
+    # amcomment = StringField('PM Comments')
+    # pmcomment = StringField('STeam Comments')
+    # sbcomment = StringField('AM Comments')
     submit = SubmitField('Submit')
 
 class RoleForm(FlaskForm):

@@ -43,10 +43,10 @@ def add_event():
     form = EventForm()
     if form.validate_on_submit():
         event = Event(fullnames=form.fullname.data,
-                        mobilenumber=form.mobileno.data,
-                        nationalid=form.nationalid.data,
-                        deptamount=form.deptamount.data,
-                        description=form.description.data,)
+                      mobilenumber=form.mobileno.data,
+                      nationalid=form.nationalid.data,
+                      deptamount=form.deptamount.data,
+                      description=form.description.data)
         try:
             # add event to the database
             db.session.add(event)
@@ -153,7 +153,7 @@ def add_task():
 @admin.route('/tasks')
 @login_required
 def list_tasks():
-    check_admin()
+    # check_admin()
     """
     List all tasks
     """
