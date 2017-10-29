@@ -40,6 +40,16 @@ def hradmin_dashboard():
 
     return render_template('admin/events/liststaffrequest.html',staffrequests=staffrequests, title="Dashboard")
 
+@home.route('/sbtadmin/dashboard')
+@login_required
+def sbtadmin_dashboard():
+    """
+    List all tasks
+    """
+    tasks = Task.query.all()
+    return render_template('admin/tasks/listtasks.html',
+                           tasks=tasks, title='Tasks')
+
 # admin dashboard view
 @home.route('/fmadmin/dashboard')
 @login_required
@@ -202,6 +212,33 @@ def pmcomment_event(id):
                            pmcomment_event=pmcomment_event, form=form,
                            event=event, title="Edit Event")
 # -----------------
+
+@home.route('/events/sbtedit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def sbtcomment_event(id):
+    """
+    Edit an Event
+    """
+
+    sbtcomment_event = True
+
+    tasks = Task.query.get_or_404(id)
+    form = SBCommentForm(obj=tasks)
+    if form.validate_on_submit():
+        tasks.sbtcomments = form.sbtcomments.data
+        db.session.commit()
+        flash('You have successfully added a event.')
+
+        # redirect to the events page
+        return redirect(url_for('home.sbtadmin_dashboard'))
+
+    form.sbtcomments.data = tasks.sbtcomments
+    return render_template('admin/events/addeditevent.html', action="Edit",
+                           sbtcomment_event=sbtcomment_event, form=form,
+                           tasks=tasks, title="Edit Event")
+# -----------------
+
+# ----------------------
 
 ############## Staff Request################
 @home.route('/staffrequests/add', methods=['GET', 'POST'])

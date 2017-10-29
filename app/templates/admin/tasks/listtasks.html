@@ -21,8 +21,14 @@
                   <th width="15%"> Name </th>
                   <th width="40%"> Description </th>
                   <th width="15%"> No.of Users Assigned </th>
-                  <th  width="15%"> Edit </th>
-                  <th width="15%"> Delete </th>
+                  <th width="15%"> Sub Team Comments </th>
+                    {% if current_user.is_music_sbtadmin -%}
+                    <th  width="15%"> Task Plans </th>
+                    <th width="15%"> Delete </th>
+                    {% else -%}
+                    <th  width="15%"> Edit </th>
+                    <th width="15%"> Delete </th>
+                    {%- endif %}
                 </tr>
               </thead>
               <tbody>
@@ -37,16 +43,32 @@
                       0
                     {% endif %}
                   </td>
+                  <td> {{ task.sbtcomments }} </td>
+                  {% if current_user.is_music_sbtadmin -%}
                   <td style="color: #4f7386;">
-                    <a href="{{ url_for('admin.edit_task', id=task.id) }}" class="crudcolor">
+                    <a href="{{ url_for('home.sbtcomment_event', id=task.id) }}" class="crudcolor">
+                      <i class="fa fa-pencil"></i> Add
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{{ url_for('home.delete_task', id=task.id) }}">
+                      <i class="fa fa-trash"></i> Delete
+                    </a>
+                  </td>
+                  {% else -%}
+                  <td style="color: #4f7386;">
+                    <a href="{{ url_for('home.edit_task', id=task.id) }}" class="crudcolor">
                       <i class="fa fa-pencil"></i> Edit
                     </a>
                   </td>
                   <td>
-                    <a href="{{ url_for('admin.delete_task', id=task.id) }}">
+                    <a href="{{ url_for('home.delete_task', id=task.id) }}">
                       <i class="fa fa-trash"></i> Delete
                     </a>
                   </td>
+
+                  {%- endif %}
+
                 </tr>
               {% endfor %}
               </tbody>
@@ -58,10 +80,7 @@
             <h3> No tasks have been added yet. </h3>
             <hr class="intro-divider">
         {% endif %}
-          <a href="{{ url_for('admin.add_task') }}" class="btn btn-default btn-lg">
-            <i class="fa fa-plus"></i>
-            Add Task
-          </a>
+
         </div>
       </div>
     </div>

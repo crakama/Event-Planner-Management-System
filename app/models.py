@@ -25,6 +25,7 @@ class RemoteUser(UserMixin, db.Model):
     is_fmadmin = db.Column(db.Boolean, default=False)
     is_amadmin = db.Column(db.Boolean, default=False)
     is_pmadmin = db.Column(db.Boolean, default=False)
+    is_music_sbtadmin = db.Column(db.Boolean, default=False)
 
     @property
     def password(self):
@@ -111,6 +112,7 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     taskname = db.Column(db.String(60), unique=True)
     description = db.Column(db.String(200))
+    sbtcomments = db.Column(db.String(200))
     listeventid = db.Column(db.Integer,index=True, unique=True)
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
     # event_id = db.relationship('task', backref='events',

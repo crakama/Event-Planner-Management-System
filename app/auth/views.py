@@ -60,7 +60,9 @@ def login():
             elif remotuser.is_fmadmin:
                 return redirect(url_for('home.fmadmin_dashboard'))
             elif remotuser.is_fmadmin:
-                return redirect(url_for('home.eventdashboard'))            
+                return redirect(url_for('home.eventdashboard'))
+            elif remotuser.is_music_sbtadmin:
+                return redirect(url_for('home.sbtadmin_dashboard'))
             else:
                 return redirect(url_for('home.eventdashboard'))
 
