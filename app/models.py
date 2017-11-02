@@ -110,10 +110,10 @@ class Task(db.Model):
     __tablename__ = 'tasks'
 
     id = db.Column(db.Integer, primary_key=True)
-    taskname = db.Column(db.String(60), unique=True)
+    taskname = db.Column(db.String(200))
     description = db.Column(db.String(200))
     sbtcomments = db.Column(db.String(200))
-    listeventid = db.Column(db.Integer,index=True, unique=True)
+    listeventid = db.Column(db.Integer,index=True)
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
     # event_id = db.relationship('task', backref='events',
     #                             lazy='dynamic')
