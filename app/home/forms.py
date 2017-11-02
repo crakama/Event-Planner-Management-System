@@ -50,7 +50,7 @@ class PMCommentForm(FlaskForm):
     """
     Form for admin to add or edit an event
     """
-    scscomment = StringField('Production Manager Comments')
+    pmcomment = StringField('Production Manager Comments')
     submit = SubmitField('Submit')
 
 class AMCommentForm(FlaskForm):

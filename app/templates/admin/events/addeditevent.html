@@ -4,9 +4,9 @@
 {% extends "base.html" %}
 {% block title %}
     {% if add_event %}
-        Add EVent
+        Add
     {% else %}
-        Edit Event
+        Edit
     {% endif %}
 {% endblock %}
 {% block body %}
@@ -16,9 +16,9 @@
       <div class="inner">
         <div class="center">
             {% if add_event %}
-                <h1>Add Event</h1>
+                <h1>Add </h1>
             {% else %}
-                <h1>Edit Event</h1>
+                <h1>Edit </h1>
             {% endif %}
             <br/>
             {{ wtf.quick_form(form) }}
